@@ -13,30 +13,30 @@ module.exports = {
     inviteStatus : { type: 'integer', defaultsTo: 0 },
     acceptDate : { type: 'datetime', defaultsTo: null }
   },
-   
+
   afterCreate: function(record, next) {
     User.findOneById(record.userID, function(err, user) {
       if (err) return next("There was an issue finding a user for this invite");
-      var criteria = {};
-      criteria.invitesSent = user.invitesSent + 1;
-      criteria.lastInviteSent = new Date().toISOString();  
-      User.update(user.id, criteria, function(err, user) {
+      var inviteInfo = {};
+      inviteInfo.invites.sent = user.invites.sent + 1;
+      inviteInfo.invites.lastInviteSent = new Date().toISOString();
+      User.update(user.id, inviteInfo, function(err, user) {
         if (err) return next("there was an issue increasing the invites sent")
         next()
       });
-    }); 
+    });
   },
-  
+
   beforeUpdate: function(values, next) {
-    
+
   },
-  
+
   afterUpdate: function(record, next) {
     var status = record.inviteStatus
     var event = record.eventID
     var user = record.userID
-  
-    if (status === 1) { 
+
+    if (status === 1) {
       Event.findOneById(event).exec(function(err, event){
         event.currentMembers.add(user);
         event.save(function(err) {});

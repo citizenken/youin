@@ -48,10 +48,10 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
-  
+  //'*': ['passport'],
+
   InvitationController: {
     create : ['isNotCreator', 'notInviteLimit', 'noMatchingInvites']
   },
-  
-  '*': ['passport'],
+
 };

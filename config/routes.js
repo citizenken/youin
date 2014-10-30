@@ -65,48 +65,26 @@ module.exports.routes = {
     controller: 'InvitationController',
     action: 'status',
   },
-  
+
   'post /event/nearby': {
     controller: 'EventController',
     action: 'nearby',
   },
-  
+
   /// Auth routes
-  'get /login': {
+  '/login': {
     controller: 'AuthController',
-    action: 'login',
+    action: 'process',
   },
 
-  'get /logout': {
-    controller: 'AuthController',
-    action: 'logout',
-  },
+//   '/logout': {
+//     controller: 'AuthController',
+//     action: 'logout',
+//   },
 
-  'get /register': {
-    controller: 'AuthController',
-    action: 'register',
-  },
-
-  'post /auth/local': {
-    controller: 'AuthController',
-    action: 'callback',
-  },
-
-  'post /auth/local/:action': {
-    controller: 'AuthController',
-    action: 'callback',
-  },
-
-  'get /auth/:provider': {
-    controller: 'AuthController',
-    action: 'provider',
-  },
-
-  'get /auth/:provider/callback': {
-    controller: 'AuthController',
-    action: 'callback',
-  },
-
-  'get /auth/:provider/:action': 'AuthController.callback',
+  // 'post /process': {
+  //   controller: 'AuthController',
+  //   action: 'register',
+  // },
 
 };
