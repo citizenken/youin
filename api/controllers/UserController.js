@@ -6,6 +6,32 @@
  */
 
 module.exports = {
+  create: function(req, res) {
+    User.create(req.body).exec(function(err, user) {
+      if (err) return res.send(err)
+      req.logIn(user, function(err) {
+        if (err) return res.send(err);
+        var loginResult = {status: 0, message: 'Logged In Successfully'};
+        return res.send({'user': user, 'login': loginResult});
+      });
+    })
+  },
+
+  findOne: function(req, res) {
+    var sessionId = req.session.passport.user
+    User.findOne(req.params.id).exec(function(err, user) {
+      if (err) return res.send(err)
+      console.log(sessionId === user.id)
+      if (sessionId === user.id) return res.send(user)
+      var propertiesToOmit = ['email', 'firstName', 'lastName', 'phoneNumber', 'invitesSent', 'lastInviteSent', 'eventInvitations', 'isActive']
+      return res.send(_.omit(user, propertiesToOmit))
+    })
+  },
+
+  view: function(req, res) {
+    res.view()
+  },
+
 	invitations: function(req,res) {
     var where = req.param('where');
 

@@ -72,15 +72,20 @@ module.exports.routes = {
   },
 
   /// Auth routes
-  '/login': {
+  'post /login': {
     controller: 'AuthController',
     action: 'process',
   },
 
-//   '/logout': {
-//     controller: 'AuthController',
-//     action: 'logout',
-//   },
+  'get /login': {
+    controller: 'AuthController',
+    action: 'login',
+  },
+
+  'get /logout': {
+    controller: 'AuthController',
+    action: 'logout',
+  },
 
   // 'post /process': {
   //   controller: 'AuthController',

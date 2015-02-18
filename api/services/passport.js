@@ -71,12 +71,12 @@ passport.use(new LocalStrategy(
               code: 'ERR_INVALID_PASS',
               message: 'Invalid Password'
             });
-          var returnUser = {
-            username: user.username,
-            createdAt: user.createdAt,
-            id: user.id
-          };
-          return done(null, returnUser, {
+          // var returnUser = {
+          //   username: user.username,
+          //   createdAt: user.createdAt,
+          //   id: user.id
+          // };
+          return done(null, user, {
             status: 0,
             message: 'Logged In Successfully'
           });

@@ -6,12 +6,34 @@
  */
 
 module.exports = {
+  // update: function(req,res) {
+  //   var user = req.user.id
+  //   var values = req.body
+  //   values.creator = user
+
+  //   Event.update(values).exec(function(err, event) {
+  //     if (err) return res.serverError(err);
+  //     return res.send(event);
+  //   })
+  // },
+
+  create: function(req,res) {
+    var user = req.user.id
+    var values = req.body
+    values.creator = user
+
+    Event.create(values).populate('invitations').exec(function(err, event) {
+      if (err) return res.send(err);
+      return res.send(event);
+    })
+  },
+
   invitations: function(req,res) {
     var where = req.param('where');
-    
+
     if (where === undefined) {
       Invitation.find().where({eventID: req.params.id}).populate('userID').exec(function(err,invites) {
-        res.json(invites);
+        res.send(invites);
       });
     } else {
 
@@ -34,19 +56,19 @@ module.exports = {
         .where(options.where)
         .populate('userID')
       .exec(function(err, invitations) {
-        res.json(invitations);
+        res.send(invitations);
       })
     }
 
   },
-  
+
   nearby: function(req, res) {
     var coordinates = req.body.coords,
     radius = req.body.radius,
     boundingBox = nearby.boundingBox(coordinates, radius),
     latWhereClause = {lat: { '>=' : boundingBox.lowLat, '<=' : boundingBox.highLat}},
     lonWhereClause = {lon: { '>=' : boundingBox.lowLon, '<=' : boundingBox.highLon}}
-    
+
     Event.find()
       .where(latWhereClause)
       .where(lonWhereClause)

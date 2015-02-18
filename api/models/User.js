@@ -6,32 +6,23 @@
 */
 var bcrypt = require('bcrypt');
 
-function hashPassword (passport, next) {
-  if (passport.password) {
-    bcrypt.hash(passport.password, 10, function (err, hash) {
-      passport.password = hash;
-      next(err, passport);
-    });
-  } else {
-    next(null, passport);
-  }
-}
-
 module.exports = {
   schema: true,
 
   attributes: {
-    email : { type: 'string', unique: true, required: true},
-    username : { type: 'string', unique: true, required: true},
-    password : { type: 'string', required: true},
-    firstName : { type: 'string'},
-    lastName : { type: 'string'},
-    phoneNumber : { type: 'integer'},
+    email : { type: 'string', unique: true, required: true },
+    username : { type: 'string', unique: true, required: true },
+    password : { type: 'string', required: true, protected: true },
+    firstName : { type: 'string' },
+    lastName : { type: 'string' },
+    phoneNumber : { type: 'integer' },
     invitesSent : { type: 'integer', defaultsTo: 0 },
-    lastInviteSent : { type: 'datetime', defaultsTo: null},
+    lastInviteSent : { type: 'datetime', defaultsTo: null },
     eventsCreated: { collection: "event", via: "creator" },
     eventsAttending: { collection: "event", via: "currentMembers" },
-    eventInvitations: { collection: "invitation", via: "userID" },
+    eventInvitations: { collection: "invitation", via: "userId" },
+    isActive: { type: 'boolean', defaultsTo: true, required: true },
+    isAdmin: { type: 'boolean', defaultsTo: false, protected: true },
   },
 
   beforeCreate: function (user, cb) {

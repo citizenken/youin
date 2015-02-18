@@ -6,17 +6,27 @@
  */
 var passport = require('passport');
 module.exports = {
-    process: function(req, res){
-        passport.authenticate('local', function(err, user, info) {
-          if (err) return res.send(err);
-          // Errors have non-zero statuses
-          if (info.status) return res.send(info);
+    login: function(req, res) {
+      res.view();
+    },
 
-          req.logIn(user, function(err) {
-            if (err) return res.send(err);
-            return res.send(info);
-          });
-        })(req, res);
-      },
+    process: function(req, res){
+      passport.authenticate('local', function(err, user, info) {
+        if (err) return res.send(err);
+        // Errors have non-zero statuses
+        if (info.status) return res.send(info);
+
+        req.logIn(user, function(err) {
+          if (err) return res.send(err);
+          return res.send(info);
+        });
+      })(req, res);
+    },
+
+    logout: function (req,res){
+     req.logout();
+      res.send('logout successful');
+    }
+
 };
 

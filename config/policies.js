@@ -48,10 +48,25 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
-  // '*': ['passport'],
+  '*' : 'isLoggedIn',
+  AuthController: {
+    '*' : true,
+    logout : 'isLoggedIn'
+  },
+
+  UserController: {
+    create : true,
+    update : ['isLoggedIn', 'isTargetUser'],
+    find : ['isLoggedIn', 'isAdmin'],
+    destroy : ['isLoggedIn', 'isTargetUser'],
+  },
 
   InvitationController: {
-    create : ['isNotCreator', 'notInviteLimit', 'noMatchingInvites']
+    create : ['isLoggedIn', 'notEventCreator', 'notInviteLimit', 'noMatchingInvites']
+  },
+
+  EventController: {
+    update : ['isLoggedIn', 'isEventCreator'],
   },
 
 };
